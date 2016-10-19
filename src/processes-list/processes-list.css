@@ -1,0 +1,33 @@
+:host{
+  background-color: rgba(20,40,80,1);
+}
+
+:host .list-item{
+  background-color: rgba(50,40,80,1);
+  border: 1px solid rgba(20,120,150,1);
+  border-left: 0;
+  border-right: 0;
+  margin-bottom: 2px;
+  cursor: default;
+
+  /* Ellipsis overflow text */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host .list-item.selected{
+  background-color: rgba(20,130,40,1) !important;
+}
+
+:host .list-item.selected-set{
+  border: 1px solid rgba(150,20,20,1) !important;
+}
+
+:host .list-item:last-child{
+  margin-bottom: 0;
+}
+
+.host .list-item:hover{
+  opacity: 0.5;
+}

@@ -1,0 +1,19 @@
+{
+  "name": "mb-windows-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mb-windows-api.js",
+  "scripts": {
+    "rebuild": "node-gyp rebuild --target=1.4.2 --arch=x64 --dist-url=https://atom.io/download/atom-shell",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^1.4.2"
+  },
+  "devDependencies": {
+    "node-gyp": "^3.4.0"
+  }
+}
