@@ -50,16 +50,21 @@ class WorkspacesManager {
     this.workspaces = [new Workspace(0)];
     this.currentWorkspaceIndex = 0;
 
+    // let left = 44;
+    // let right = 19;
 
-    mbWinApi.disableKeyLLKbHook(44);
-    mbWinApi.disableKeyLLKbHook(19);
+    let left = 45;
+    let right = 33;
+
+    mbWinApi.disableKeyLLKbHook(left);
+    mbWinApi.disableKeyLLKbHook(right);
     mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
       // console.log('lowlevelkeyboard:');
-      console.log(evt);
+      // console.log(evt);
       if(evt.msg == 256){
-        if(evt.vkCode == 44){
+        if(evt.vkCode == left){
           this.prevWorkspace();
-        }else if(evt.vkCode == 19){
+        }else if(evt.vkCode == right){
           this.nextWorkspace();
         }
         let procList = this.getCurrentWorkspace().getProcesses();
@@ -110,7 +115,8 @@ class WorkspacesManager {
       mbWinApi.showWindow(procList2[i], mbWinApi.SW_CMDS.SW_SHOW);
     }
 
-    let plistElem = document.querySelector('processes-list');
+    let gui = document.querySelector('workspaces-manager-gui');
+    let plistElem = gui.root.querySelector('processes-list');
     plistElem.refresh();
   }
 
@@ -130,7 +136,8 @@ class WorkspacesManager {
         mbWinApi.showWindow(procList2[i], mbWinApi.SW_CMDS.SW_SHOW);
       }
 
-      let plistElem = document.querySelector('processes-list');
+      let gui = document.querySelector('workspaces-manager-gui');
+      let plistElem = gui.root.querySelector('processes-list');
       plistElem.refresh();
     }
   }

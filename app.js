@@ -1,5 +1,7 @@
 'use babel';
 
+// npm win-mouse
+
 const fs = require('fs');
 // console.log(fs);
 
@@ -55,10 +57,11 @@ app.on('ready', function() {
       autoHideMenuBar: true,
       show: false,
       alwaysOnTop: true,
-      fullscreen: true,
-      frame: false,
+      // fullscreen: true,
+      // frame: false,
       transparent: true
     });
+    // mainWindow2.setIgnoreMouseEvents(true);
     // mainWindow2.setPosition(-1400,150);
 
     // and load the index.html of the app.
@@ -81,6 +84,10 @@ app.on('ready', function() {
       mainWindow.webContents.executeJavaScript("starter();");
       mainWindow2.show();
     });
+
+    const workspaceDisplay = require('./src/browser-windows/workspace-display');
+    console.log(workspaceDisplay);
+    workspaceDisplay.createWindow();
   });
 
   // Emitted when the window is closed.

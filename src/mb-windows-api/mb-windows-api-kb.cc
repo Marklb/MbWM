@@ -65,9 +65,11 @@ void LLKbHook() {
 }
 
 void LLKbHookLoop(uv_work_t *req) {
-    while (true) {
-        Sleep(1);
-    }
+  LLKbHook();
+  while (true) {
+      printf("Thgifn\n");
+      Sleep(1);
+  }
 }
 
 void LLKbHookHandleKeyEvent(uv_async_t *handle) {
@@ -133,6 +135,7 @@ void HookLLKb(const FunctionCallbackInfo<Value>& args) {
   uv_thread_create(&t_id, uvcb, &param);
 
   uv_run(loop, UV_RUN_DEFAULT);
+  // uv_run(loop, UV_RUN_NOWAIT);
 
   args.GetReturnValue().Set(String::NewFromUtf8(isolate, "__Method2__"));
 }
