@@ -85,9 +85,9 @@ app.on('ready', function() {
       mainWindow2.show();
     });
 
-    const workspaceDisplay = require('./src/browser-windows/workspace-display');
-    console.log(workspaceDisplay);
-    workspaceDisplay.createWindow();
+    // const workspaceDisplay = require('./src/browser-windows/workspace-display');
+    // console.log(workspaceDisplay);
+    // workspaceDisplay.createWindow();
   });
 
   // Emitted when the window is closed.
@@ -111,3 +111,22 @@ mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
   // console.log('lowlevelkeyboard:');
   // console.log(evt);
 });
+
+// const WinMouse = require('win-mouse');
+// let mouse = WinMouse();
+// mouse.on('move', (x, y) => {
+//     console.log(x, y);
+// });
+
+
+// You must have at least 3.10.8 version of NPM. This is critical.
+// npm -g install npm@next
+//
+// Make sure Node globally uses the same version 2015
+// npm config set msvs_version 2015 --global
+
+
+
+var bindings = require('bindings');
+var mbWinLLKb = bindings('mb-win-ll-keyboard');
+mbWinLLKb.hookLLKb();
