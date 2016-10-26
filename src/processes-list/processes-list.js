@@ -11,7 +11,7 @@ let fs = require('fs');
 // const mblib = require(app.getAppPath()+'/src/mblib/mblib.js');
 // const mblibCSS = mblib.css;
 // const mblibElectron = mblib.electron;
-const mbWinApi = require('../mb-windows-api');
+const mbWinApi = require('../mb-win-api');
 
 
 // CSS files
@@ -50,14 +50,14 @@ class ProcessesList extends HTMLElement {
   attachedCallback() {
     this.refresh();
 
-    mbWinApi.disableKeyLLKbHook(116);
-    mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
-      if(evt.msg == 256){
-        if(evt.vkCode == 116){
-          this.refresh();
-        }
-      }
-    });
+    // mbWinApi.disableKeyLLKbHook(116);
+    // mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
+    //   if(evt.msg == 256){
+    //     if(evt.vkCode == 116){
+    //       this.refresh();
+    //     }
+    //   }
+    // });
   }
 
   refresh() {

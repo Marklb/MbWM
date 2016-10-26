@@ -1,10 +1,13 @@
 require('./src/core');
-const mbWinApi = require('./src/mb-windows-api');
-// console.log(mbWinApi);
-// mbWinApi.enableMouse();
-// mbWinApi.disableMouse();
 
-// var addon = require('bindings')('mb-windows-api');
+const mbWinApi = require('./src/mb-win-api');
+const mbLLKb = require(__dirname+'/src/mb-win-ll-keyboard');
+mbLLKb.on('message', (args) => {
+  console.log(args);
+});
+
+
+
 
 // let processesList = require();
 require('./src/processes-list/processes-list');
@@ -49,11 +52,6 @@ btn.addEventListener('mousedown', () => {
 
 
 
-mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
-  // console.log('lowlevelkeyboard:');
-  // console.log(evt);
-});
-
 // mbWinApi.disableKeyLLKbHook(103);
 // mbWinApi.disableKeyLLKbHook(104);
 
@@ -62,9 +60,9 @@ mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
 // });
 
 
-let win = require('electron').remote.getCurrentWindow();
-// let WM_MOUSEMOVE = 0x0200;
-let WM_MOUSEMOVE = 512;
-win.hookWindowMessage(WM_MOUSEMOVE, (e) => {
-  console.log('Moving');
-});
+// let win = require('electron').remote.getCurrentWindow();
+// // let WM_MOUSEMOVE = 0x0200;
+// let WM_MOUSEMOVE = 512;
+// win.hookWindowMessage(WM_MOUSEMOVE, (e) => {
+//   console.log('Moving');
+// });

@@ -1,6 +1,6 @@
 require(__dirname+'/workspace');
 require(__dirname+'/workspaces-manager-gui');
-const mbWinApi = require('../mb-windows-api');
+const mbWinApi = require('../mb-win-api');
 
 class Workspace {
   constructor(id) {
@@ -56,30 +56,30 @@ class WorkspacesManager {
     let left = 45;
     let right = 33;
 
-    mbWinApi.disableKeyLLKbHook(left);
-    mbWinApi.disableKeyLLKbHook(right);
-    mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
-      // console.log('lowlevelkeyboard:');
-      // console.log(evt);
-      if(evt.msg == 256){
-        if(evt.vkCode == left){
-          this.prevWorkspace();
-        }else if(evt.vkCode == right){
-          this.nextWorkspace();
-        }
-        let procList = this.getCurrentWorkspace().getProcesses();
-        for(let i = 0; i < procList.length; i++){
-          let procKey = this.getCurrentWorkspace().getProcessKey(procList[i]);
-          if(procKey){
-            if(procKey.vkCode === evt.vkCode){
-              console.log('Activate: ' + procList[i]);
-              // mbWinApi.showWindow(procList[i], mbWinApi.SW_CMDS.SW_RESTORE);
-              mbWinApi.setForegroundWindow(procList[i]);
-            }
-          }
-        }
-      }
-    });
+    // mbWinApi.disableKeyLLKbHook(left);
+    // mbWinApi.disableKeyLLKbHook(right);
+    // mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
+    //   // console.log('lowlevelkeyboard:');
+    //   // console.log(evt);
+    //   if(evt.msg == 256){
+    //     if(evt.vkCode == left){
+    //       this.prevWorkspace();
+    //     }else if(evt.vkCode == right){
+    //       this.nextWorkspace();
+    //     }
+    //     let procList = this.getCurrentWorkspace().getProcesses();
+    //     for(let i = 0; i < procList.length; i++){
+    //       let procKey = this.getCurrentWorkspace().getProcessKey(procList[i]);
+    //       if(procKey){
+    //         if(procKey.vkCode === evt.vkCode){
+    //           console.log('Activate: ' + procList[i]);
+    //           // mbWinApi.showWindow(procList[i], mbWinApi.SW_CMDS.SW_RESTORE);
+    //           mbWinApi.setForegroundWindow(procList[i]);
+    //         }
+    //       }
+    //     }
+    //   }
+    // });
 
 
   }

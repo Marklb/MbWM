@@ -1,7 +1,5 @@
 'use babel';
 
-// npm win-mouse
-
 const fs = require('fs');
 // console.log(fs);
 
@@ -10,12 +8,20 @@ const app = electron.app;  // Module to control application life.
 const BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
 const ipcMain = electron.ipcMain;
 
-const mbWinApi = require('./src/mb-windows-api');
+const mbLLKb = require(__dirname+'/src/mb-win-ll-keyboard');
+mbLLKb.hook();
+mbLLKb.disableVkCodeKey(mbLLKb.CONSTANTS.VK_NUMPAD7);
+mbLLKb.on('message', (args) => {
+  console.log(args);
+});
+
+
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
-var mainWindow2 = null;
+// var mainWindow2 = null;
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -31,63 +37,35 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 10,
-    height: 10,
+    width: 1000,
+    height: 600,
     autoHideMenuBar: true,
-    show: false
+    show: true,
+    alwaysOnTop: true,
+    // fullscreen: true,
+    // frame: false,
+    transparent: true
   });
-  // mainWindow.setPosition(-1400,150);
+  // mainWindow.setIgnoreMouseEvents(true);
 
   // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/kbhook.html');
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // ${DEBUG_PREFIX}-lowlevelkeyboard-set-window-id
   mainWindow.webContents.on('did-finish-load', function() {
-  // ipcMain.on(`lowlevelkeyboard-done-hooking`, (event, arg) => {
-    // console.log('Done loading');
-    // mainWindow.webContents.executeJavaScript("starter();");
-
-    // Create the browser window.
-    mainWindow2 = new BrowserWindow({
-      width: 1000,
-      height: 600,
-      autoHideMenuBar: true,
-      show: false,
-      alwaysOnTop: true,
-      // fullscreen: true,
-      // frame: false,
-      transparent: true
-    });
-    // mainWindow2.setIgnoreMouseEvents(true);
-    // mainWindow2.setPosition(-1400,150);
-
-    // and load the index.html of the app.
-    mainWindow2.loadURL('file://' + __dirname + '/index.html');
-
-    // Open the DevTools.
-    mainWindow2.webContents.openDevTools();
-
-    // Emitted when the window is closed.
-    mainWindow2.on('closed', function() {
-      // Dereference the window object, usually you would store windows
-      // in an array if your app supports multi windows, this is the time
-      // when you should delete the corresponding element.
-      mainWindow2 = null;
-      mainWindow.close();
-    });
-    global.mainWindow2 = mainWindow2;
-
-    mainWindow2.webContents.on('did-finish-load', function() {
-      mainWindow.webContents.executeJavaScript("starter();");
-      mainWindow2.show();
-    });
 
     // const workspaceDisplay = require('./src/browser-windows/workspace-display');
     // console.log(workspaceDisplay);
     // workspaceDisplay.createWindow();
+
+    const windowEditor = require('./src/browser-windows/window-editor');
+    console.log(windowEditor);
+    windowEditor.createWindow();
+
+
   });
 
   // Emitted when the window is closed.
@@ -95,7 +73,12 @@ app.on('ready', function() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
+
     mainWindow = null;
+    let wins = BrowserWindow.getAllWindows();
+    for(let i = 0; i < wins.length; i++){
+      wins[i].close();
+    }
   });
   global.mainWindow = mainWindow;
 
@@ -106,11 +89,6 @@ app.on('ready', function() {
 
 });
 
-
-mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
-  // console.log('lowlevelkeyboard:');
-  // console.log(evt);
-});
 
 // const WinMouse = require('win-mouse');
 // let mouse = WinMouse();
@@ -126,7 +104,13 @@ mbWinApi.on('lowlevelkeyboard-msg', (evt) =>{
 // npm config set msvs_version 2015 --global
 
 
-
-var bindings = require('bindings');
-var mbWinLLKb = bindings('mb-win-ll-keyboard');
-mbWinLLKb.hookLLKb();
+// var bindings = require('bindings');
+// var mbWinLLKb = bindings('mb-win-ll-keyboard');
+// mbWinLLKb.hookLLKb(
+//   (arg) => {
+//     console.log(arg);
+//     // console.log(`msg: ${arg.msg}`);
+//     // console.log(`keyCode: ${arg.vkCode}`);
+//     // ipcRenderer.send(`${DEBUG_PREFIX}-lowlevelkeyboard-msg-recieved`, arg);
+//   }
+// );
