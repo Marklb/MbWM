@@ -219,7 +219,8 @@ void mb_SetWindowLongPtr(const FunctionCallbackInfo<Value>& args)
   // int hWndInt = (int)(args[0]->NumberValue());
   HWND hWnd = (HWND)((int)(args[0]->NumberValue()));
   int nIndex = (int)(args[1]->NumberValue());
-  LONG_PTR dwNewLong = (LONG_PTR)(args[2]->NumberValue());
+  DWORD dwNewLong = (DWORD)(args[2]->NumberValue());
+  cout << dwNewLong << endl;
 
   SetWindowLongPtr(hWnd, nIndex, dwNewLong);
 
@@ -247,12 +248,62 @@ void mb_GetWindowLongPtr(const FunctionCallbackInfo<Value>& args)
   HWND hWnd = (HWND)((int)(args[0]->NumberValue()));
   int nIndex = (int)(args[1]->NumberValue());
 
-  LONG_PTR prt = GetWindowLongPtr(hWnd, nIndex);
+  DWORD prt = GetWindowLongPtr(hWnd, nIndex);
+  cout << "GetWindowLongPrt" << endl;
+  cout << "\t" << prt << endl;
+  // cout << "\t" << &prt << endl;
+  // cout << "\t" << *prt << endl;
+  // fprintf(stderr, "Test\n");
 
   args.GetReturnValue().Set(Number::New(isolate, prt));
 }
 
+void mb_GetRgnBox(const FunctionCallbackInfo<Value>& args)
+{
+  Isolate* isolate = args.GetIsolate();
 
+  int hwndInt = (int)(args[0]->NumberValue());
+  HWND hWnd = (HWND)hwndInt;
+
+  // WINDOWINFO info;
+  // info.cbSize = sizeof(WINDOWINFO);
+  // GetWindowInfo(hWnd, &info);
+
+  // cout <<"Info: "<< info.rcWindow.left << " " << info.rcWindow.top << " " << info.rcWindow.right << " " << info.rcWindow.bottom << endl;
+  // fprintf(stdout, "left: %d, top: %d, right: %d, bottom: %d\n",
+  //   info.rcWindow.left,
+  //   info.rcWindow.top,
+  //   info.rcWindow.right,
+  //   info.rcWindow.bottom);
+
+  // RECT r;
+  // GetWindowRect(hWnd, &r);
+  // cout <<"Rect: "<< r.left << " " << r.top << " " << r.right << " " << r.bottom << endl;
+  //
+  // char title[80];
+	// GetWindowText(hWnd,title,sizeof(title));
+  // cout <<"Window title: "<<title<<endl;
+
+  // HRGN rgn;
+  // GetWindowRgn(hWnd, rgn);
+  //
+  // RECT r;
+  // GetRgnBox(rgn, &r);
+  // cout <<"Rect: "<< r.left << " " << r.top << " " << r.right << " " << r.bottom << endl;
+
+
+  // Local<Object> obj = Object::New(isolate);
+  // obj->Set(String::NewFromUtf8(isolate, "left"), Number::New(isolate, r.left));
+  // obj->Set(String::NewFromUtf8(isolate, "top"), Number::New(isolate, r.top));
+  // obj->Set(String::NewFromUtf8(isolate, "right"), Number::New(isolate, r.right));
+  // obj->Set(String::NewFromUtf8(isolate, "bottom"), Number::New(isolate, r.bottom));
+  //
+  // // const int argc = 1;
+  // // Handle<Value> argv[argc];
+  // // argv[0] = obj;
+  //
+  // args.GetReturnValue().Set(obj);
+}
 
 
 
@@ -276,6 +327,7 @@ void init(Local<Object> exports) {
   NODE_SET_METHOD(exports, "setWindowPos", mb_SetWindowPos);
   NODE_SET_METHOD(exports, "setWindowLongPtr", mb_SetWindowLongPtr);
   NODE_SET_METHOD(exports, "getWindowLongPtr", mb_GetWindowLongPtr);
+  NODE_SET_METHOD(exports, "getRgnBox", mb_GetRgnBox);
 
 }
 

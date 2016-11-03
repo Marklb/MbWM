@@ -1,5 +1,5 @@
 const bindings = require('bindings');
-const addon = bindings('mb-win-ll-keyboard');
+const addon = bindings('mb-win-mouse');
 
 // const electron = require('electron');
 // const BrowserWindow = ((process.type=='browser')? electron.BrowserWindow : electron.remote);
@@ -8,12 +8,12 @@ const addon = bindings('mb-win-ll-keyboard');
 const {ipcMain} = require('electron');
 const {ipcRenderer} = require('electron');
 
-const DEBUG_PREFIX = 'MbWinLLKb';
+const DEBUG_PREFIX = 'MbWinMouse';
 
-const CONSTANTS = require('./mb-win-ll-keyboard-contants');
+const CONSTANTS = require('./mb-win-mouse-contants');
 
 const typeApiModule = ((process.type=='browser') ?
-  require('./mb-win-ll-keyboard-main') : require('./mb-win-ll-keyboard-remote')
+  require('./mb-win-mouse-main') : require('./mb-win-mouse-remote')
 );
 
 if(process.type == 'browser'){
@@ -64,13 +64,13 @@ api.CONSTANTS = CONSTANTS;
 
 if(process.type == 'browser') {
   api.hook = typeApiModule.hook;
-  api.disableVkCodeKey = typeApiModule.disableVkCodeKey;
-  api.enableVkCodeKey = typeApiModule.enableVkCodeKey;
+  // api.disableVkCodeKey = typeApiModule.disableVkCodeKey;
+  // api.enableVkCodeKey = typeApiModule.enableVkCodeKey;
 }
 
 if(process.type == 'renderer') {
-  api.disableVkCodeKey = typeApiModule.disableVkCodeKey;
-  api.enableVkCodeKey = typeApiModule.enableVkCodeKey;
+  // api.disableVkCodeKey = typeApiModule.disableVkCodeKey;
+  // api.enableVkCodeKey = typeApiModule.enableVkCodeKey;
 }
 
 module.exports = api;

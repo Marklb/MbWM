@@ -10,6 +10,15 @@
       ]
     },
     {
+      "target_name": "mb-win-mouse",
+      "sources": [
+        "src/mb-win-mouse/mb-win-mouse.cc"
+      ],
+      "include_dirs" : [
+        "<!(node -e \"require('nan')\")"
+      ]
+    },
+    {
       "target_name": "mb-win-api",
       "sources": [
         "src/mb-win-api/mb-win-api.cc"

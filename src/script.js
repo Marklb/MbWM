@@ -6,6 +6,11 @@ mbLLKb.on('message', (args) => {
   console.log(args);
 });
 
+const mbMouse = require(__dirname+'/src/mb-win-mouse');
+mbMouse.on('message', (args) => {
+  console.log(args);
+});
+
 
 
 

@@ -15,6 +15,13 @@ mbLLKb.on('message', (args) => {
   console.log(args);
 });
 
+const mbMouse = require(__dirname+'/src/mb-win-Mouse');
+mbMouse.hook();
+// mbMouse.disableVkCodeKey(mbMouse.CONSTANTS.VK_NUMPAD7);
+mbMouse.on('message', (args) => {
+  console.log(args);
+});
+
 
 
 

@@ -94,6 +94,8 @@ class WindowEditor extends HTMLElement {
   }
 
   refreshEdittingBox() {
+    if(!this.selectedSetHwnd) return;
+    this.edittingBoxSet = true;
     // console.log('refreshEdittingBox');
     let hWnd = this.selectedSetHwnd;
     // console.log(hWnd);
@@ -111,47 +113,70 @@ class WindowEditor extends HTMLElement {
     inputTop.value = winPos.top;
     inputRight.value = winPos.right;
     inputBottom.value = winPos.bottom;
-    if(!this.winPosSetBtnEventSet){
+    if(!this.edittingBoxSet){
       let winPosSetBtn = winPosGrpElem.querySelector('.set-position');
       winPosSetBtn.addEventListener('mousedown', (e) => {
-        console.log(`Set | left: ${inputLeft.value}, top: ${inputTop.value}, right: ${inputRight.value}, bottom: ${inputBottom.value}`);
-
+        // console.log(`Set | left: ${inputLeft.value}, top: ${inputTop.value}, right: ${inputRight.value}, bottom: ${inputBottom.value}`);
 
         mbWinApi.setWindowPos(hWnd, null, inputLeft.value, inputTop.value,
           (inputRight.value-inputLeft.value), (inputBottom.value-inputTop.value),
           mbWinApi.CONSTANTS.SWP_ASYNCWINDOWPOS | mbWinApi.CONSTANTS.SWP_DEFERERASE);
 
-
-        // let k = 0x4000 | 0x2000;
-        // let k = SWP_ASYNCWINDOWPOS | SWP_DEFERERASE;
-        // console.log(k);
+        this.refreshEdittingBox();
       });
     }
 
     let grpToggles = this.root.querySelector('.option-group.toggle');
     let isTopMostToggleBtn = this.root.querySelector('.btn.is-top-most');
 
-    let exStyes = mbWinApi.getWindowLongPtr(hWnd, mbWinApi.CONSTANTS.GWL_EXSTYLE);
-    console.log(exStyes & mbWinApi.CONSTANTS.WS_EX_TOPMOST);
-    let isTopMost = (exStyes & mbWinApi.CONSTANTS.WS_EX_TOPMOST) ? 'TRUE' : 'FALSE';
+    let isTopMost = (mbWinApi.getWindowLongPtr(hWnd,
+      mbWinApi.CONSTANTS.GWL_EXSTYLE) & mbWinApi.CONSTANTS.WS_EX_TOPMOST)
+      ? 'TRUE' : 'FALSE';
     isTopMostToggleBtn.innerHTML = `IsTopMost[${isTopMost}]`;
-    isTopMostToggleBtn.addEventListener('mousedown', (e) => {
-      // mbWinApi.setWindowLongPtr(hWnd, mbWinApi.CONSTANTS.GWL_EXSTYLE, exStyes & mbWinApi.CONSTANTS.WS_EX_TOPMOST);
-      mbWinApi.setWindowLongPtr(hWnd, mbWinApi.CONSTANTS.GWL_EXSTYLE, mbWinApi.CONSTANTS.WS_EX_TOPMOST);
-      let ex = mbWinApi.getWindowLongPtr(hWnd, mbWinApi.CONSTANTS.GWL_STYLE);
-      let newStyle = ex & !(mbWinApi.CONSTANTS.WS_SYSMENU);
-      mbWinApi.setWindowLongPtr(hWnd,mbWinApi.CONSTANTS.GWL_STYLE,newStyle);
+    if(!this.edittingBoxSet){
+      isTopMostToggleBtn.addEventListener('mousedown', (e) => {
 
+        let dwStyle = mbWinApi.getWindowLongPtr(hWnd, mbWinApi.CONSTANTS.GWL_EXSTYLE);
 
-      // if(isTopMost === true){
-      //   console.log('Set TopMost False');
-      //   mbWinApi.setWindowLongPtr(hWnd, mbWinApi.CONSTANTS.GWL_EXSTYLE, exStyes & !mbWinApi.CONSTANTS.WS_EX_TOPMOST);
-      // }else{
-      //   console.log('Set TopMost True');
-      //   mbWinApi.setWindowLongPtr(hWnd, mbWinApi.CONSTANTS.GWL_EXSTYLE, exStyes & mbWinApi.CONSTANTS.WS_EX_TOPMOST);
-      // }
-    });
+        if(dwStyle & mbWinApi.CONSTANTS.WS_EX_TOPMOST){
+          mbWinApi.setWindowPos(hWnd,mbWinApi.CONSTANTS.HWND_NOTOPMOST,0,0,0,0,
+            mbWinApi.CONSTANTS.SWP_NOMOVE | mbWinApi.CONSTANTS.SWP_NOSIZE);
+        }else{
+          mbWinApi.setWindowPos(hWnd,mbWinApi.CONSTANTS.HWND_TOPMOST,0,0,0,0,
+            mbWinApi.CONSTANTS.SWP_NOMOVE | mbWinApi.CONSTANTS.SWP_NOSIZE);
+        }
 
+        this.refreshEdittingBox();
+      });
+    }
+
+    let hasCaptionToggleBtn = this.root.querySelector('.btn.has-caption');
+
+    let hasCaption = (mbWinApi.getWindowLongPtr(hWnd,
+      mbWinApi.CONSTANTS.GWL_STYLE) & mbWinApi.CONSTANTS.WS_CAPTION)
+      ? 'TRUE' : 'FALSE';
+    let hasBorder = (mbWinApi.getWindowLongPtr(hWnd,
+      mbWinApi.CONSTANTS.GWL_STYLE) & mbWinApi.CONSTANTS.WS_BORDER)
+      ? 'TRUE' : 'FALSE';
+    hasCaptionToggleBtn.innerHTML = `HasCaption[${hasCaption}][${hasBorder}]`;
+    if(!this.edittingBoxSet){
+      hasCaptionToggleBtn.addEventListener('mousedown', (e) => {
+
+        let dwStyle = mbWinApi.getWindowLongPtr(hWnd, mbWinApi.CONSTANTS.GWL_STYLE);
+        mbWinApi.setWindowLongPtr(hWnd, mbWinApi.CONSTANTS.GWL_STYLE,
+          dwStyle ^ mbWinApi.CONSTANTS.WS_BORDER
+          ^ mbWinApi.CONSTANTS.WS_CAPTION
+          ^ mbWinApi.CONSTANTS.WS_THICKFRAME);
+
+        mbWinApi.setWindowPos(hWnd,null,0,0,0,0,mbWinApi.CONSTANTS.SWP_NOMOVE
+          | mbWinApi.CONSTANTS.SWP_NOSIZE | mbWinApi.CONSTANTS.SWP_NOZORDER
+          | mbWinApi.CONSTANTS.SWP_FRAMECHANGED);
+
+        this.refreshEdittingBox();
+      });
+    }
+
+    // mbWinApi.getRgnBox(hWnd);
 
   }
 
