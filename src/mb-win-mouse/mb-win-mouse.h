@@ -32,8 +32,8 @@ using namespace std;
 
 struct data_MouseHook_t {
   int msg;
-  int vkCode;
-  int scanCode;
+  int x;
+  int y;
 }typedef data_MouseHook;
 
 void HookMouse(const FunctionCallbackInfo<Value>& args);

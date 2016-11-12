@@ -60,12 +60,18 @@ api.on = function(channel, listener) {
   typeApiModule.on(channel, listener);
 }
 
+
 api.CONSTANTS = CONSTANTS;
 
 if(process.type == 'browser') {
   api.hook = typeApiModule.hook;
   api.disableVkCodeKey = typeApiModule.disableVkCodeKey;
   api.enableVkCodeKey = typeApiModule.enableVkCodeKey;
+
+  api.getAsyncKeyState = addon.getAsyncKeyState;
+  // api.getDisabledVkCodeKeys = addon.getDisabledVkCodeKeys;
+  api.pressedKeys = addon.pressedKeys;
+  api.disabledVkCodes = addon.disabledVkCodes;
 }
 
 if(process.type == 'renderer') {

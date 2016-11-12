@@ -1,0 +1,187 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  // height: 64px;
+  height: 100%;
+  font-size: 16px;
+  margin-bottom: 10px;
+  background-repeat: no-repeat;
+  // @include background-size(40px, 171px);
+  // @include box-sizing(border-box);
+  box-sizing: border-box;
+
+  display: block;
+  padding: 5px 0px 5px 5px;
+  // @include transition(border-color .2s);
+  border: 1px solid #aaa;
+  // @include border-radius(2px);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-appearance: textfield;
+  -webkit-rtl-ordering: logical;
+  -webkit-user-select: text;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  text-align: start;
+  -webkit-writing-mode: horizontal-tb;
+  background-color: rgba(20,20,20,0.3);
+  color: rgba(230,230,230,1);
+}
+
+
+.ui-workspaces-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(20,20,20,0.5);
+  box-sizing: border-box;
+  // border: 3px solid rgba(0,250,0,1);
+}
+.ui-workspaces-container .input-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  left: 10px;
+  height: 40px;
+  background-color: rgba(20,40,80,1);
+  // -webkit-app-region: drag;
+  // -webkit-app-region: no-drag;
+
+}
+
+.ui-workspaces-container > .processes-list-container {
+  background-color: rgba(80,40,120,1);
+  position: absolute;
+  // top: 100px;
+  // right: 10px;
+  // left: 50px;
+  // height: 40px;
+  // min-width: 800px;
+  // clear fix
+  // overflow: auto;
+  // zoom: 1;
+}
+
+#sortable {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  // width: 450px;
+  width: 250px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+#sortable li {
+  margin: 3px 3px 3px 0;
+  padding: 1px;
+  float: left;
+  /*width: 100px;*/
+  /*width: 100%;*/
+  width: 200px;
+  height: 25px;
+  /*font-size: 4em;*/
+  /*font-size: 4em;*/
+  font-size: 20px;
+  /*text-align: center;*/
+}
+#sortable li.process-tile {
+  background-color: rgba(40,40,120,1);
+  color: rgba(230,230,230,1);
+  border: 1px solid rgba(100,120,250,1);
+  padding-left: 4px;
+}
+#sortable li.ui-sortable-placeholder {
+  background-color: rgba(60,40,120,1);
+  border: 1px solid rgba(100,120,250,1);
+}
+
+#sortable2 {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 250px;
+  position: absolute;
+  top: 0px;
+  left: 260px;
+}
+#sortable2 li {
+  margin: 3px 3px 3px 0;
+  padding: 1px;
+  float: left;
+  /*width: 100px;*/
+  /*width: 100%;*/
+  width: 200px;
+  height: 25px;
+  /*font-size: 4em;*/
+  /*font-size: 4em;*/
+  font-size: 20px;
+  /*text-align: center;*/
+}
+
+#sortable2 li.process-tile {
+  background-color: rgba(40,40,120,1);
+  /*color: rgba(230,230,230,1);*/
+  color: rgba(130,230,230,1);
+  border: 1px solid rgba(100,120,250,1);
+  padding-left: 4px;
+}
+#sortable2 li.ui-sortable-placeholder {
+  background-color: rgba(60,40,120,1);
+  border: 1px solid rgba(100,120,250,1);
+}
+
+
+
+
+.test-div {
+  background-color: rgba(80,40,120,1);
+  box-sizing: border-box;
+  border: 1px solid rgba(20,80,120,1);
+  position: absolute;
+}
+
+
+
+.debug-panel {
+  position: absolute;
+  box-sizing: border-box;
+  background-color: rgba(80,40,120,1);
+  border: 1px solid rgba(20,80,120,1);
+  padding: 2px;
+}
+
+.debug-panel.mouse-debug {
+}
+
+.debug-panel.mouse-debug > .mouse-pos {
+  color: rgba(230,230,230,1);
+}
+
+.debug-panel.mouse-debug > .virtual-mouse-pos {
+  color: rgba(230,230,230,1);
+}
+
+.debug-panel.hover-elem-debug {
+}
+
+.debug-panel.hover-elem-debug > .pos-tl {
+  color: rgba(230,230,230,1);
+}
+
+.debug-panel.hover-elem-debug > .pos-br {
+  color: rgba(230,230,230,1);
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Workspaces</title>
+
+    <link rel="stylesheet" href="../../../../../res/jquery-ui/jquery-ui.min.css">
+    <!-- <script src="../../../../../res/jquery-ui/external/jquery/jquery.js"></script> -->
+
+    <!-- <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="../../../../../res/jquery-ui/jquery-ui.min.js"></script> -->
+
+    <!-- <link rel="stylesheet" href="../../themes/base/all.css"> -->
+    <!-- <link rel="stylesheet" href="../demos.css"> -->
+    <style>
+
+
+    /*#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+    #sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+    html>body #sortable li { height: 1.5em; line-height: 1.2em; }
+    .ui-state-highlight { height: 1.5em; line-height: 1.2em; }*/
+    </style>
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+    <!-- normal script imports etc  -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+
+    <!-- <script>
+    $( function() {
+      $( "#sortable" ).sortable();
+      $( "#sortable" ).disableSelection();
+    } );
+    </script> -->
+
+    <!-- <script src="../../external/requirejs/require.js"></script> -->
+    <!-- <script src="../../../../../node_modules/jquery-ui/bootstrap.js" data-modules="disable-selection">
+      $( "#sortable" ).sortable();
+      $( "#sortable" ).disableSelection();
+    </script> -->
+
+  </head>
+  <body>
+    <div class="ui-workspaces-container">
+      <div class="input-container">
+        <input type="text" value="" placeholder="Command..."
+          class="commands-input">
+      </div>
+
+      <div class="processes-list-container">
+        <ul id="sortable"  class="connectedSortable">
+        	<li class="ui-state-default process-tile">1</li>
+        	<li class="ui-state-default process-tile">2</li>
+        	<li class="ui-state-default process-tile">3</li>
+        	<li class="ui-state-default process-tile">4</li>
+        	<li class="ui-state-default process-tile">5</li>
+        	<li class="ui-state-default process-tile">6</li>
+        	<li class="ui-state-default process-tile">7</li>
+        	<li class="ui-state-default process-tile">8</li>
+        	<li class="ui-state-default process-tile">9</li>
+        	<li class="ui-state-default process-tile">10</li>
+        	<li class="ui-state-default process-tile">11</li>
+        	<li class="ui-state-default process-tile">12</li>
+        </ul>
+        <ul id="sortable2" class="connectedSortable">
+        	<li class="ui-state-default process-tile">1</li>
+        	<li class="ui-state-default process-tile">2</li>
+        	<li class="ui-state-default process-tile">3</li>
+        	<li class="ui-state-default process-tile">4</li>
+        	<li class="ui-state-default process-tile">5</li>
+        	<li class="ui-state-default process-tile">6</li>
+        	<li class="ui-state-default process-tile">7</li>
+        	<li class="ui-state-default process-tile">8</li>
+        	<li class="ui-state-default process-tile">9</li>
+        	<li class="ui-state-default process-tile">10</li>
+        	<li class="ui-state-default process-tile">11</li>
+        	<li class="ui-state-default process-tile">12</li>
+        </ul>
+      </div>
+
+    </div>
+    <!-- <div class="test-div"></div> -->
+    <!-- <div class="test-div"></div>
+    <div class="test-div"></div> -->
+
+    <div class="debug-panel mouse-debug">
+      <div class="mouse-pos">Mouse position:</div>
+    </div>
+
+    <div class="debug-panel hover-elem-debug">
+      <div class="pos-tl">TL:</div>
+      <div class="pos-br">BR:</div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

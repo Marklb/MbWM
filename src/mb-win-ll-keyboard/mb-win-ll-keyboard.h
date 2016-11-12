@@ -30,6 +30,9 @@ using Nan::To;
 
 using namespace std;
 
+#define VKCODES_BUFFSIZE 256
+// #define VKCODES_BUFFSIZE 65535
+
 struct data_LLKbHook_t {
   int msg;
   int vkCode;
@@ -41,6 +44,14 @@ void HookLLKb(const FunctionCallbackInfo<Value>& args);
 void RunThread(void* arg);
 
 void LLKbHookHandleKeyEvent(uv_async_t *handle);
+
+void LLKbHookDisableVkCodeKey(const FunctionCallbackInfo<Value>& args);
+
+void LLKbHookEnableVkCodeKey(const FunctionCallbackInfo<Value>& args);
+
+void LLKBHookGetDisabledVkCodeKeys(const FunctionCallbackInfo<Value>& args);
+
+void LLKBHookGetAsyncKeyState(const FunctionCallbackInfo<Value>& args);
 
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 

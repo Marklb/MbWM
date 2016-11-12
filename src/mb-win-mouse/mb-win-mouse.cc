@@ -75,8 +75,8 @@ void RunThread(void* arg) {
 }
 
 void MouseHookHandleKeyEvent(uv_async_t *handle) {
-  cout << "MouseHookHandleKeyEvent" << endl;
-  // data_MouseHook *data_t = (data_MouseHook*)handle->data;
+  // cout << "MouseHookHandleKeyEvent" << endl;
+  data_MouseHook *data_t = (data_MouseHook*)handle->data;
 
   auto isolate = Isolate::GetCurrent();
   auto context = isolate->GetCurrentContext();
@@ -84,9 +84,9 @@ void MouseHookHandleKeyEvent(uv_async_t *handle) {
   HandleScope scope;
 
   Local<Object> obj = Object::New(isolate);
-  // obj->Set(String::NewFromUtf8(isolate, "msg"), Number::New(isolate, data_t->msg));
-  // obj->Set(String::NewFromUtf8(isolate, "vkCode"), Number::New(isolate, data_t->vkCode));
-  // obj->Set(String::NewFromUtf8(isolate, "scanCode"), Number::New(isolate, data_t->scanCode));
+  obj->Set(String::NewFromUtf8(isolate, "msg"), Number::New(isolate, data_t->msg));
+  obj->Set(String::NewFromUtf8(isolate, "x"), Number::New(isolate, data_t->x));
+  obj->Set(String::NewFromUtf8(isolate, "y"), Number::New(isolate, data_t->y));
 
   const int argc = 1;
   Handle<Value> argv[argc];
@@ -94,7 +94,7 @@ void MouseHookHandleKeyEvent(uv_async_t *handle) {
 
   auto fn = Local<Function>::New(isolate, MousePersistentCallback);
   fn->Call(global, argc, argv);
-  // free(data_t);
+  free(data_t);
 }
 
 // void LLKbHookDisableVkCodeKey(const FunctionCallbackInfo<Value>& args) {
@@ -111,84 +111,123 @@ void MouseHookHandleKeyEvent(uv_async_t *handle) {
 //   fprintf(stderr, "LLKbHook Enable key: %d\n", vkCode);
 // }
 
-bool IsTouchEvent() {
-    const LONG_PTR c_SIGNATURE_MASK = 0xFFFFFF00;
-    const LONG_PTR c_MOUSEEVENTF_FROMTOUCH = 0xFF515700;
-
-    LONG_PTR extraInfo = GetMessageExtraInfo();
-    return ( ( extraInfo & c_SIGNATURE_MASK ) == c_MOUSEEVENTF_FROMTOUCH );
-}
+// bool IsTouchEvent() {
+//     const LONG_PTR c_SIGNATURE_MASK = 0xFFFFFF00;
+//     const LONG_PTR c_MOUSEEVENTF_FROMTOUCH = 0xFF515700;
+//
+//     LONG_PTR extraInfo = GetMessageExtraInfo();
+//     return ( ( extraInfo & c_SIGNATURE_MASK ) == c_MOUSEEVENTF_FROMTOUCH );
+// }
 
 LRESULT CALLBACK LowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
     if (nCode == HC_ACTION)
     {
-        PKBDLLHOOKSTRUCT p = (PKBDLLHOOKSTRUCT)lParam;
+        // PKBDLLHOOKSTRUCT p = (PKBDLLHOOKSTRUCT)lParam;
+        MSLLHOOKSTRUCT* p = (MSLLHOOKSTRUCT*)lParam;
         switch (wParam)
         {
-          case WM_KEYDOWN:
-          case WM_KEYUP:
-          {
-            // cout << "Hooking LL Kb" << endl;
-            data_MouseHook *data_t = (data_MouseHook*)malloc(sizeof(data_MouseHook));
-            data_t->msg = (int)wParam;
-            // data_t->vkCode = (int)p->vkCode;
-            // data_t->scanCode = (int)p->scanCode;
-            async.data = (void*)data_t;
-            uv_async_send(&async);
-
-            break;
-          }
-          case WM_MOUSEMOVE:
-          {
-            // cout << "WM_MOUSEMOVE" << endl;
-            // data_MouseHook *data_t = (data_MouseHook*)malloc(sizeof(data_MouseHook));
-            // data_t->msg = (int)wParam;
-            // data_t->vkCode = (int)p->vkCode;
-            // data_t->scanCode = (int)p->scanCode;
-            // async.data = (void*)data_t;
-            // uv_async_send(&async);
-
-            break;
-          }
           case WM_LBUTTONDOWN:
+          case WM_LBUTTONUP:
+          case WM_MOUSEMOVE:
+          // case WM_MOUSEWHEEL:
+          // case WM_MOUSEHWHEEL:
+          case WM_RBUTTONDOWN:
+          case WM_RBUTTONUP:
           {
-            cout << "WM_LBUTTONDOWN" << endl;
-            // GetMessageExtraInfo(void);
-            if(IsTouchEvent() == true){
-              cout << "WM_LBUTTONDOWN  true" << endl;
-            }else{
-              cout << "WM_LBUTTONDOWN  false" << endl;
-            }
-
-
             data_MouseHook *data_t = (data_MouseHook*)malloc(sizeof(data_MouseHook));
             data_t->msg = (int)wParam;
-            // data_t->vkCode = (int)p->vkCode;
-            // data_t->scanCode = (int)p->scanCode;
+            data_t->x = (int)p->pt.x;
+            data_t->y = (int)p->pt.y;
+
             async.data = (void*)data_t;
             uv_async_send(&async);
-
             break;
           }
+          // case WM_KEYDOWN:
+          // case WM_KEYUP:
+          // {
+          //   // cout << "Hooking LL Kb" << endl;
+          //   data_MouseHook *data_t = (data_MouseHook*)malloc(sizeof(data_MouseHook));
+          //   data_t->msg = (int)wParam;
+          //   // data_t->vkCode = (int)p->vkCode;
+          //   // data_t->scanCode = (int)p->scanCode;
+          //   async.data = (void*)data_t;
+          //   uv_async_send(&async);
+          //
+          //   break;
+          // }
+          // case WM_MOUSEMOVE:
+          // {
+          //   cout << "WM_MOUSEMOVE" << endl;
+          //   data_MouseHook *data_t = (data_MouseHook*)malloc(sizeof(data_MouseHook));
+          //   // p->pt.x, p->pt.y
+          //   data_t->msg = (int)wParam;
+          //   data_t->vkCode = (int)p->vkCode;
+          //   data_t->scanCode = (int)p->scanCode;
+          //   async.data = (void*)data_t;
+          //   uv_async_send(&async);
+          //
+          //   break;
+          // }
+          // case WM_LBUTTONDOWN:
+          // {
+          //   cout << "WM_LBUTTONDOWN" << endl;
+          //   // GetMessageExtraInfo(void);
+          //   // if(IsTouchEvent() == true){
+          //   //   cout << "WM_LBUTTONDOWN  true" << endl;
+          //   // }else{
+          //   //   cout << "WM_LBUTTONDOWN  false" << endl;
+          //   // }
+          //
+          //
+          //   data_MouseHook *data_t = (data_MouseHook*)malloc(sizeof(data_MouseHook));
+          //   data_t->msg = (int)wParam;
+          //   // data_t->vkCode = (int)p->vkCode;
+          //   // data_t->scanCode = (int)p->scanCode;
+          //   async.data = (void*)data_t;
+          //   uv_async_send(&async);
+          //
+          //   break;
+          // }
+          // case WM_RBUTTONDOWN:
+          // {
+          //   cout << "WM_RBUTTONDOWN" << endl;
+          //   // GetMessageExtraInfo(void);
+          //   // if(IsTouchEvent() == true){
+          //   //   cout << "WM_RBUTTONDOWN  true" << endl;
+          //   // }else{
+          //   //   cout << "WM_RBUTTONDOWN  false" << endl;
+          //   // }
+          //
+          //
+          //   data_MouseHook *data_t = (data_MouseHook*)malloc(sizeof(data_MouseHook));
+          //   data_t->msg = (int)wParam;
+          //   // data_t->vkCode = (int)p->vkCode;
+          //   // data_t->scanCode = (int)p->scanCode;
+          //   async.data = (void*)data_t;
+          //   uv_async_send(&async);
+          //
+          //   break;
+          // }
         }
 
-        switch (wParam)
-        {
-          case WM_KEYDOWN:
-          case WM_KEYUP:
-          {
-            // cout << "WM_KEYDOWN" << endl;
-            // if(hkLLKbDisabledKeysVkCodes[(int)p->vkCode] == true){
-            //   // fprintf(stderr, "LLKbHook Disabled key: %d\n", (int)p->vkCode);
-            //   return 1;
-            // }else{
-            //   // fprintf(stderr, "LLKbHook Enabled key: %d\n", (int)p->vkCode);
-            // }
-            // uv_async_send(&async);
-            break;
-          }
-        }
+        // switch (wParam)
+        // {
+        //   case WM_KEYDOWN:
+        //   case WM_KEYUP:
+        //   {
+        //     // cout << "WM_KEYDOWN" << endl;
+        //     // if(hkLLKbDisabledKeysVkCodes[(int)p->vkCode] == true){
+        //     //   // fprintf(stderr, "LLKbHook Disabled key: %d\n", (int)p->vkCode);
+        //     //   return 1;
+        //     // }else{
+        //     //   // fprintf(stderr, "LLKbHook Enabled key: %d\n", (int)p->vkCode);
+        //     // }
+        //     // uv_async_send(&async);
+        //     break;
+        //   }
+        // }
     }
     return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
